@@ -27,7 +27,10 @@ namespace ModTools
         public Rect sceneExplorerRect = new Rect(128, 440, 800, 500);
         public bool sceneExplorerVisible = false;
 
-        public Rect watchesRect = new Rect(504, 128, 800, 300);
+		public Rect resourcesExplorerRect = new Rect(128, 440, 800, 500);
+		public bool resourcesExplorerVisible = false;
+
+		public Rect watchesRect = new Rect(504, 128, 800, 300);
         public bool watchesVisible = false;
 
         public bool logExceptionsToConsole = true;

@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="GUICommon\ColorPicker.cs" />
     <Compile Include="GUICommon\GUIStackTrace.cs" />
+    <Compile Include="ResourcesExplorer.cs" />
     <Compile Include="Utils\ColorUtil.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Console.cs" />

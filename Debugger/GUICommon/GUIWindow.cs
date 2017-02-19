@@ -112,7 +112,8 @@ namespace ModTools
         {
             skin.font = Font.CreateDynamicFontFromOSFont(config.fontName, config.fontSize);
             ModTools.Instance.sceneExplorer.RecalculateAreas();
-        }
+			ModTools.Instance.resourcesExplorer.RecalculateAreas();
+		}
 
         public static void UpdateMouseScrolling()
         {

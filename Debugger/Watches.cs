@@ -97,7 +97,14 @@ namespace ModTools
                     sceneExplorer.visible = true;
                 }
 
-                if (GUILayout.Button("x", GUILayout.Width(24)))
+				if (GUILayout.Button("Find in Resources Explorer"))
+				{
+					var sceneExplorer = FindObjectOfType<ResourcesExplorer>();
+					sceneExplorer.ExpandFromRefChain(watch.Trim(watch.Length - 1));
+					sceneExplorer.visible = true;
+				}
+
+				if (GUILayout.Button("x", GUILayout.Width(24)))
                 {
                     RemoveWatch(watch);
                 }

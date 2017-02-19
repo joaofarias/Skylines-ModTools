@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace ModTools
@@ -22,30 +25,64 @@ namespace ModTools
             return roots;
         }
 
-        public static List<KeyValuePair<GameObject, Component>> FindComponentsOfType(string typeName)
-        {
-            var roots = FindSceneRoots();
-            var list = new List<KeyValuePair<GameObject, Component>>();
-            foreach (var root in roots.Keys)
-            {
-                FindComponentsOfType(typeName, root, list);
-            }
-            return list;
-        }
+		public static Dictionary<GameObject, bool> FindAllGameObjects()
+		{
+			Dictionary<GameObject, bool> roots = new Dictionary<GameObject, bool>();
 
-        public static void FindComponentsOfType(string typeName, GameObject gameObject, List<KeyValuePair<GameObject, Component>> list)
-        {
-            var component = gameObject.GetComponent(typeName);
-            if (component != null)
-            {
-                list.Add(new KeyValuePair<GameObject, Component>(gameObject, component));
-            }
+			GameObject[] objects = Resources.FindObjectsOfTypeAll<GameObject>().ToArray();
+			foreach (var obj in objects)
+			{
+				if (!roots.ContainsKey(obj.transform.root.gameObject))
+				{
+					roots.Add(obj.transform.root.gameObject, true);
+				}
+			}
 
-            for (int i = 0; i < gameObject.transform.childCount; i++)
-            {
-                FindComponentsOfType(typeName, gameObject.transform.GetChild(i).gameObject, list);
-            }
-        }
+			return roots;
+		}
+
+		public static List<GameObject> FindGameObjectsByName(string name, bool inScene)
+		{
+			List<GameObject> gameObjects = new List<GameObject>();
+			string nameLowerCase = name.ToLower();
+
+			GameObject[] objects = inScene ? GameObject.FindObjectsOfType<GameObject>() : Resources.FindObjectsOfTypeAll<GameObject>();
+			foreach (var go in objects)
+			{
+				if (go.name.ToLower().Contains(nameLowerCase))
+				{
+					gameObjects.Add(go);
+				}
+			}
+
+			return gameObjects;
+		}
+
+		public static List<Component> FindComponentsOfType(string typeName, bool inScene)
+		{
+			string typeNameLowerCase = typeName.ToLower();
+			List<Component> components = new List<Component>();
+
+			foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+			{
+				foreach (Type t in a.GetTypes())
+				{
+					if (t.FullName.ToLower().Contains(typeNameLowerCase) && typeof(Component).IsAssignableFrom(t))
+					{
+						object[] objects = inScene ? GameObject.FindObjectsOfType(t) : Resources.FindObjectsOfTypeAll(t);
+						foreach (var obj in objects)
+						{
+							if (obj.GetType() == t)
+							{
+								components.Add(obj as Component);
+							}
+						}
+					}
+				}
+			}			
+
+			return components;
+		}
 
         public static string WhereIs(GameObject gameObject, bool logToConsole = true)
         {

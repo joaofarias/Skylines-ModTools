@@ -20,6 +20,7 @@ namespace ModTools
         public Console console;
         public SceneExplorer sceneExplorer;
         public SceneExplorerColorConfig sceneExplorerColorConfig;
+		public ResourcesExplorer resourcesExplorer;
 
         public ScriptEditor scriptEditor;
 
@@ -36,6 +37,7 @@ namespace ModTools
             Destroy(console);
             Destroy(sceneExplorer);
             Destroy(sceneExplorerColorConfig);
+			Destroy(resourcesExplorer);
             Destroy(scriptEditor);
             Destroy(watches);
             Destroy(colorPicker);
@@ -82,7 +84,15 @@ namespace ModTools
                 sceneExplorer.Refresh();
             }
 
-            scriptEditor.ReloadProjectWorkspace();
+			resourcesExplorer.rect = config.resourcesExplorerRect;
+			resourcesExplorer.visible = config.resourcesExplorerVisible;
+
+			if (resourcesExplorer.visible)
+			{
+				resourcesExplorer.Refresh();
+			}
+
+			scriptEditor.ReloadProjectWorkspace();
         }
 
         public void SaveConfig()
@@ -101,7 +111,10 @@ namespace ModTools
                 config.sceneExplorerRect = sceneExplorer.rect;
                 config.sceneExplorerVisible = sceneExplorer.visible;
 
-                Configuration.Serialize(configPath, config);
+				config.resourcesExplorerRect = resourcesExplorer.rect;
+				config.resourcesExplorerVisible = resourcesExplorer.visible;
+
+				Configuration.Serialize(configPath, config);
             }
         }
 
@@ -125,6 +138,7 @@ namespace ModTools
             }
 
             sceneExplorer = gameObject.AddComponent<SceneExplorer>();
+			resourcesExplorer = gameObject.AddComponent<ResourcesExplorer>();
             watches = gameObject.AddComponent<Watches>();
             colorPicker = gameObject.AddComponent<ColorPicker>();
             scriptEditor = gameObject.AddComponent<ScriptEditor>();
@@ -197,7 +211,16 @@ namespace ModTools
                 }
             }
 
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.W))
+			if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
+			{
+				resourcesExplorer.visible = !resourcesExplorer.visible;
+				if (resourcesExplorer.visible)
+				{
+					resourcesExplorer.Refresh();
+				}
+			}
+
+			if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.W))
             {
                 watches.visible = !watches.visible;
             }
@@ -287,7 +310,16 @@ namespace ModTools
                 }
             }
 
-            if (GUILayout.Button("Script editor (Ctrl+`)"))
+			if (GUILayout.Button("Resources explorer (Ctrl+R)"))
+			{
+				resourcesExplorer.visible = !resourcesExplorer.visible;
+				if (resourcesExplorer.visible)
+				{
+					resourcesExplorer.Refresh();
+				}
+			}
+
+			if (GUILayout.Button("Script editor (Ctrl+`)"))
             {
 				// Disabled until I find a workaround
                 //scriptEditor.visible = !scriptEditor.visible;
