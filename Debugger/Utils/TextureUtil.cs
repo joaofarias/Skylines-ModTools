@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using ColossalFramework.IO;
 using UnityEngine;
 
 namespace ModTools.Utils
@@ -101,7 +100,7 @@ namespace ModTools.Utils
                     filename = $"{filename}.png";
                 }
             }
-            filename = Path.Combine(Path.Combine(DataLocation.addonsPath, "Import"), filename);
+            filename = Path.Combine(Path.Combine(Application.dataPath, "Import"), filename);
 
             if (File.Exists(filename))
             {

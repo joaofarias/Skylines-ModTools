@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Linq;
-using ColossalFramework;
-using ColossalFramework.Plugins;
-using ICities;
 using UnityEngine;
 
 namespace ModTools
@@ -12,26 +9,10 @@ namespace ModTools
         public static bool initialized;
         private static bool bootstrapped;
 
-        public static bool IsModToolsActive()
-        {
-#if DEBUG
-            return true;
-#else
-            var pluginManager = PluginManager.instance;
-            var plugins = pluginManager.GetPluginsInfo();
-
-            return (from item in plugins let instances = item.GetInstances<IUserMod>()
-                    where instances.FirstOrDefault() is Mod select item.isEnabled).FirstOrDefault();
-
-#endif
-        }
-
         public static void Bootstrap()
         {
             if (!bootstrapped)
             {
-                CODebugBase<LogChannel>.verbose = true;
-                CODebugBase<LogChannel>.EnableChannels(LogChannel.All);
                 bootstrapped = true;
             }
             if (initialized)
@@ -45,16 +26,12 @@ namespace ModTools
             }
             catch (Exception e)
             {
-                DebugOutputPanel.AddMessage(PluginManager.MessageType.Error, e.Message);
+                Debug.Log(e.GetType().Name + ": " + e.Message);
             }
         }
 
         private static void InitModTools()
         {
-            if (!IsModToolsActive())
-            {
-                return;
-            }
             var modToolsGameObject = GameObject.Find("ModTools");
             if (modToolsGameObject != null)
             {

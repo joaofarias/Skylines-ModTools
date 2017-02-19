@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using ColossalFramework;
-using ColossalFramework.UI;
 using ModTools.Explorer;
-using ModTools.Utils;
 using UnityEngine;
 
 namespace ModTools
 {
 
-    public class SceneExplorer : GUIWindow
+	public class SceneExplorer : GUIWindow
     {
         public Dictionary<GameObject, bool> sceneRoots = new Dictionary<GameObject, bool>();
         private string findGameObjectFilter = "";
@@ -54,16 +48,6 @@ namespace ModTools
             state = new SceneExplorerState();
 
             RecalculateAreas();
-        }
-
-        public void Awake()
-        {
-            Plopper.Reset();
-        }
-
-        public void Update()
-        {
-            Plopper.Update();
         }
 
         public void RecalculateAreas()

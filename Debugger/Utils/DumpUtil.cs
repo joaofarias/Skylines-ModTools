@@ -1,7 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using ColossalFramework.IO;
-using ColossalFramework.UI;
 using UnityEngine;
 
 namespace ModTools.Utils
@@ -16,11 +14,6 @@ namespace ModTools.Utils
             DumpMeshAndTextures(assetName, mesh, material);
             DumpMeshAndTextures($"{assetName}_lod", lodMesh, lodMaterial);
             Log.Warning($"Successfully dumped asset \"{assetName}\"");
-            var path = Path.Combine(DataLocation.addonsPath, "Import");
-            UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage(
-                "Asset dump completed",
-                $"Asset \"{assetName}\" was successfully dumped to:\n{path}",
-                false);
         }
 
         public static void DumpMeshAndTextures(string assetName, Mesh mesh, Material material = null)

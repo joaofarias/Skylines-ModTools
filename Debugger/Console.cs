@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using ColossalFramework.UI;
 using UnityEngine;
 
 namespace ModTools
@@ -65,16 +64,12 @@ namespace ModTools
         private Vector2 consoleScrollPosition = Vector2.zero;
         private Vector2 commandLineScrollPosition = Vector2.zero;
 
-        private DebugOutputPanel vanillaPanel;
-        private Transform oldVanillaPanelParent;
-
         private List<KeyValuePair<int, string>> userNotifications; 
 
         public Console() : base("Debug console", config.consoleRect, skin)
         {
             onDraw = DrawWindow;
             onException = HandleException;
-            onUnityDestroy = HandleDestroy;
 
             headerArea = new GUIArea(this);
             consoleArea = new GUIArea(this);
@@ -132,26 +127,6 @@ namespace ModTools
                 }
 
                 RunCommandLine();
-            }
-        }
-        void HandleDestroy()
-        {
-            vanillaPanel.transform.parent = oldVanillaPanelParent;
-            vanillaPanel = null;
-        }
-
-        void Update()
-        {
-            if (vanillaPanel == null)
-            {
-                var panel = UIView.library?.Get<DebugOutputPanel>("DebugOutputPanel");
-                if (panel == null)
-                {
-                    return;
-                }
-                vanillaPanel = panel;
-                oldVanillaPanelParent = vanillaPanel.transform.parent;
-                vanillaPanel.transform.parent = transform;
             }
         }
 

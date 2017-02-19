@@ -1,16 +1,16 @@
-﻿using ICities;
+﻿//using ICities;
 
-namespace ModTools
-{
-    public class Mod : IUserMod
-    {
+//namespace ModTools
+//{
+//    public class Mod : IUserMod
+//    {
 
-        public string Name
-        {
-            get { ModToolsBootstrap.Bootstrap(); return "ModTools"; }
-        }
+//        public string Name
+//        {
+//            get { ModToolsBootstrap.Bootstrap(); return "ModTools"; }
+//        }
 
-        public string Description => "Debugging toolkit for modders";
-    }
+//        public string Description => "Debugging toolkit for modders";
+//    }
 
-}
+//}

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using ColossalFramework.Plugins;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,8 +18,6 @@ namespace ModTools
         private static readonly string[] gameAssemblies =
         {
             "Assembly-CSharp.dll",
-            "ICities.dll",
-            "ColossalManaged.dll",
             "UnityEngine.dll"
         };
 
@@ -40,11 +37,6 @@ namespace ModTools
 
             dllsPath = Path.Combine(workspacePath, "dll");
             Directory.CreateDirectory(dllsPath);
-
-            PluginManager.eventLogMessage += (type, message) =>
-            {
-                //       Log.Error(String.Format("PluginManager error ({0}) - {1}", type, message));
-            };
         }
 
         public static bool RunSource(List<ScriptEditorFile> sources, out string errorMessage, out IModEntryPoint modInstance)
@@ -114,10 +106,11 @@ namespace ModTools
 
             dllPath = Path.Combine(outputPath, Path.GetFileName(outputPath) + ".dll");
 
-            var modToolsAssembly = FileUtil.FindPluginPath(typeof(Mod));
-            var additionalAssemblies = gameAssemblies.Concat(new[]{modToolsAssembly}).ToArray();
+			// TODO: this was a feature from Cities Skylines - need to find replacement
+            //var modToolsAssembly = FileUtil.FindPluginPath(typeof(Mod));
+            //var additionalAssemblies = gameAssemblies.Concat(new[]{modToolsAssembly}).ToArray();
 
-            PluginManager.CompileSourceInFolder(sourcePath, outputPath, additionalAssemblies);
+            //PluginManager.CompileSourceInFolder(sourcePath, outputPath, additionalAssemblies);
             return File.Exists(dllPath);
         }
 

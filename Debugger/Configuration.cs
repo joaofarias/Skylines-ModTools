@@ -98,6 +98,11 @@ namespace ModTools
 
         public static Configuration Deserialize(string filename)
         {
+			if (!File.Exists(filename))
+			{
+				return new Configuration();
+			}
+
             var serializer = new XmlSerializer(typeof(Configuration));
 
             try

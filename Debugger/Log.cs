@@ -10,10 +10,6 @@ namespace ModTools
             {
                 ModTools.Instance.console.AddMessage(s, LogType.Log, false);
             }
-            else
-            {
-                DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Message, s);
-            }
         }
 
         public static void Error(string s)
@@ -22,10 +18,6 @@ namespace ModTools
             {
                 ModTools.Instance.console.AddMessage(s, LogType.Error, false);
             }
-            else
-            {
-                DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Error, s);
-            }
         }
 
         public static void Warning(string s)
@@ -33,10 +25,6 @@ namespace ModTools
             if (ModTools.Instance.console != null)
             {
                 ModTools.Instance.console.AddMessage(s, LogType.Warning, false);
-            }
-            else
-            {
-                DebugOutputPanel.AddMessage(ColossalFramework.Plugins.PluginManager.MessageType.Warning, s);
             }
         }
     }

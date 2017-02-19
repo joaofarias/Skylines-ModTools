@@ -1,6 +1,4 @@
 ﻿using System;
-using ColossalFramework.UI;
-using ICities;
 using UnityEngine;
 
 namespace ModTools
@@ -21,7 +19,6 @@ namespace ModTools
 
         public Console console;
         public SceneExplorer sceneExplorer;
-        private DebugRenderer debugRenderer;
         public SceneExplorerColorConfig sceneExplorerColorConfig;
 
         public ScriptEditor scriptEditor;
@@ -200,15 +197,6 @@ namespace ModTools
                 }
             }
 
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
-            {
-                if (debugRenderer == null)
-                {
-                    debugRenderer = GameObject.FindObjectOfType<UIView>().gameObject.AddComponent<DebugRenderer>();
-                }
-                debugRenderer.drawDebugInfo = !debugRenderer.drawDebugInfo;
-            }
-
             if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.W))
             {
                 watches.visible = !watches.visible;
@@ -277,65 +265,11 @@ namespace ModTools
                 SaveConfig();
             }
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Game panel extensions");
-            var newExtendGamePanels = GUILayout.Toggle(config.extendGamePanels, "");
-            GUILayout.EndHorizontal();
-
-            if (newExtendGamePanels != config.extendGamePanels)
-            {
-                config.extendGamePanels = newExtendGamePanels;
-                SaveConfig();
-
-                if (config.extendGamePanels)
-                {
-                    gameObject.AddComponent<GamePanelExtender>();
-                }
-                else
-                {
-                    Destroy(gameObject.GetComponent<GamePanelExtender>());
-                }
-            }
-
-            GUILayout.BeginHorizontal();
-            if (debugRenderer == null)
-            {
-                debugRenderer = GameObject.FindObjectOfType<UIView>().gameObject.AddComponent<DebugRenderer>();
-            }
-            GUILayout.Label("Debug Renderer (Ctrl+R)");
-            debugRenderer.drawDebugInfo = GUILayout.Toggle(debugRenderer.drawDebugInfo, "");
-            GUILayout.EndHorizontal();
-
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Custom Prefabs Object");
-            var customPrefabsObject = GUILayout.Toggle(config.customPrefabsObject, "");
-            GUILayout.EndHorizontal();
-            if (customPrefabsObject != config.customPrefabsObject)
-            {
-                config.customPrefabsObject = customPrefabsObject;
-                if (config.customPrefabsObject)
-                {
-                    CustomPrefabs.Bootstrap();
-                }
-                else
-                {
-                    CustomPrefabs.Revert();
-                }
-                SaveConfig();
-            }
-
             if (GUILayout.Button("Debug console (F7)"))
             {
                 if (console != null)
                 {
-                    console.visible = true;
-                }
-                else
-                {
-                    var debugOutputPanel = GameObject.Find("(Library) DebugOutputPanel").GetComponent<DebugOutputPanel>();
-                    debugOutputPanel.enabled = true;
-                    debugOutputPanel.GetComponent<UIPanel>().isVisible = true;
+                    console.visible = !console.visible;
                 }
             }
 
@@ -355,7 +289,8 @@ namespace ModTools
 
             if (GUILayout.Button("Script editor (Ctrl+`)"))
             {
-                scriptEditor.visible = !scriptEditor.visible;
+				// Disabled until I find a workaround
+                //scriptEditor.visible = !scriptEditor.visible;
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ColossalFramework.UI;
 using UnityEngine;
 
 namespace ModTools
@@ -69,7 +68,6 @@ namespace ModTools
             { 
                 _visible = value; 
                 GUI.BringWindowToFront(id);
-                UpdateClickCatcher();
 
                 if (_visible && onOpen != null)
                 {
@@ -90,8 +88,6 @@ namespace ModTools
 
         private static List<GUIWindow> windows = new List<GUIWindow>();
 
-        private UIPanel clickCatcher;
-
         public GUIWindow(string _title, Rect _rect, GUISkin _skin)
         {
             id = UnityEngine.Random.Range(1024, int.MaxValue);
@@ -100,33 +96,6 @@ namespace ModTools
             skin = _skin;
             minSize = new Vector2(64.0f, 64.0f);
             windows.Add(this);
-
-            var uiView = FindObjectOfType<UIView>();
-            if (uiView != null)
-            {
-                clickCatcher = uiView.AddUIComponent(typeof(UIPanel)) as UIPanel;
-                if (clickCatcher != null)
-                {
-                    clickCatcher.name = "_ModToolsInternal";
-                }
-            }
-            UpdateClickCatcher();
-        }
-
-        void UpdateClickCatcher()
-        {
-            if (clickCatcher == null)
-            {
-                return;
-            }
-
-            //adjust rect from unity pixels to C:S pixels via GetUIView().ratio
-            var ratio = UIView.GetAView().ratio;
-
-            clickCatcher.absolutePosition = new Vector3(rect.position.x * ratio, rect.position.y * ratio);
-            clickCatcher.size = new Vector2(rect.width * ratio, rect.height * ratio);
-            clickCatcher.isVisible = visible;
-            clickCatcher.zOrder = int.MaxValue;
         }
 
         void OnDestroy()
@@ -134,11 +103,6 @@ namespace ModTools
             if (onUnityDestroy != null)
             {
                 onUnityDestroy();
-            }
-
-            if (clickCatcher != null)
-            {
-                Destroy(clickCatcher.gameObject);
             }
 
             windows.Remove(this);
@@ -155,7 +119,6 @@ namespace ModTools
             var mouse = Input.mousePosition;
             mouse.y = Screen.height - mouse.y;
             var mouseInsideGuiWindow = windows.Any(window => window.visible && window.rect.Contains(mouse));
-            Util.SetMouseScrolling(!mouseInsideGuiWindow);
         }
 
         void OnGUI()
@@ -340,8 +303,6 @@ namespace ModTools
                         movingWindow = null;
                         ModTools.Instance.SaveConfig();
 
-                        UpdateClickCatcher();
-
                         if (onMove != null)
                         {
                             onMove(rect.position);
@@ -380,8 +341,6 @@ namespace ModTools
                     movingWindow = null;
                     visible = false;
                     ModTools.Instance.SaveConfig();
-
-                    UpdateClickCatcher();
                     
                     if (onClose != null)
                     {
@@ -435,8 +394,6 @@ namespace ModTools
                     {
                         resizingWindow = null;
                         ModTools.Instance.SaveConfig();
-
-                        UpdateClickCatcher();
 
                         if (onResize != null)
                         {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using ColossalFramework.IO;
 using ObjUnity3D;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace ModTools.Utils
     {
         public static void DumpMeshToOBJ(Mesh mesh, string fileName)
         {
-            fileName = Path.Combine(Path.Combine(DataLocation.addonsPath, "Import"), fileName);
+            fileName = Path.Combine(Path.Combine(Application.dataPath, "Import"), fileName);
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);
