@@ -46,7 +46,8 @@ namespace ModTools
 			List<GameObject> gameObjects = new List<GameObject>();
 			string nameLowerCase = name.ToLower();
 
-			GameObject[] objects = inScene ? GameObject.FindObjectsOfType<GameObject>() : Resources.FindObjectsOfTypeAll<GameObject>();
+			GameObject[] objects = inScene ? GameObject.FindObjectsOfType<GameObject>()
+										   : Resources.FindObjectsOfTypeAll<GameObject>().Except(GameObject.FindObjectsOfType<GameObject>()).ToArray();
 			foreach (var go in objects)
 			{
 				if (go.name.ToLower().Contains(nameLowerCase))
@@ -69,7 +70,8 @@ namespace ModTools
 				{
 					if (t.FullName.ToLower().Contains(typeNameLowerCase) && typeof(Component).IsAssignableFrom(t))
 					{
-						object[] objects = inScene ? GameObject.FindObjectsOfType(t) : Resources.FindObjectsOfTypeAll(t);
+						object[] objects = inScene ? GameObject.FindObjectsOfType(t)
+												   : Resources.FindObjectsOfTypeAll(t).Except(GameObject.FindObjectsOfType(t)).ToArray();
 						foreach (var obj in objects)
 						{
 							if (obj.GetType() == t)
